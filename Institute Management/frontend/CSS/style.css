@@ -1,0 +1,303 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* WHITE THEME HEADER */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 5%;
+    background: white;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+    /* Subtle shadow */
+    color: #333;
+}
+
+.logo-area {
+    display: flex;
+    align-items: center;
+    font-size: 1.2rem;
+    color: #009688;
+    /* Teal */
+}
+
+.logo-area img {
+    height: 60px;
+    /* Bigger logo */
+    width: auto;
+    margin-right: 15px;
+}
+
+.login-btn {
+    padding: 10px 25px;
+    border: 1px solid #009688;
+    background: transparent;
+    color: #009688;
+    border-radius: 50px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: 0.3s;
+}
+
+.login-btn:hover {
+    background: #009688;
+    color: white;
+}
+
+/* WELCOME / HERO */
+.welcome {
+    height: 70vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(135deg, #f0fdfa, #e0f2f1);
+    /* Very light teal gradient */
+    text-align: center;
+    flex-direction: column;
+}
+
+/* MARQUEE ANIMATION */
+.marquee-container {
+    width: 250px;
+    overflow: hidden;
+    white-space: nowrap;
+    position: relative;
+}
+
+.marquee-text {
+    display: inline-block;
+    padding-left: 100%;
+    animation: marquee 10s linear infinite;
+    color: #009688;
+    font-weight: 600;
+}
+
+@keyframes marquee {
+    0% {
+        transform: translateX(0);
+    }
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+/* BACKGROUND PARTICLES */
+.bg-particle {
+    position: absolute;
+    background: rgba(0, 150, 136, 0.15);
+    /* Faint Teal */
+    border-radius: 50%;
+    animation: floatUp linear infinite;
+    z-index: 0;
+    /* Behind text */
+    pointer-events: none;
+}
+
+/* 3-LINE WELCOME LAYOUT */
+.typing-container {
+    z-index: 1;
+    /* Text on top */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+@keyframes floatUp {
+    0% {
+        transform: translateY(0) rotate(0deg);
+        opacity: 0;
+    }
+
+    20% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: translateY(-80vh) rotate(360deg);
+        opacity: 0;
+    }
+}
+
+/* 1. Main Title - Typing Animation */
+.main-title.typing-main {
+    font-size: 3rem;
+    color: #1e293b;
+    font-weight: 700;
+    overflow: hidden;
+    white-space: nowrap;
+    border-right: 3px solid #f59e0b;
+    /* Cursor */
+    width: 0;
+    /* Type for 3.5s, then cursor blinks forever */
+    animation:
+        typeText 3.5s steps(40) forwards,
+        blinkCursor 0.75s step-end infinite;
+}
+
+/* 2. Connector & - Fade In */
+.connector {
+    font-size: 2.5rem;
+    color: #f59e0b;
+    /* Orange */
+    font-weight: bold;
+    opacity: 0;
+    /* Starts after Main Title (3.5s) */
+    animation: fadeIn 1s ease 3.8s forwards;
+}
+
+/* 3. Sub Title - Slide Up Reveal (Different Animation) */
+.sub-title.reveal-text {
+    font-size: 2.5rem;
+    color: #009688;
+    /* Teal */
+    font-weight: 600;
+    opacity: 0;
+    transform: translateY(30px);
+    /* Starts after Connector is visible (4.5s) */
+    animation: slideUpFade 1s ease 4.5s forwards;
+}
+
+/* ANIMATIONS */
+@keyframes typeText {
+    from {
+        width: 0;
+    }
+
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blinkCursor {
+
+    from,
+    to {
+        border-color: transparent
+    }
+
+    50% {
+        border-color: #f59e0b;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideUpFade {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* COURSES */
+.courses {
+    padding: 60px 10%;
+    text-align: center;
+    background: white;
+}
+
+.courses h2 {
+    margin-bottom: 50px;
+    color: #009688;
+    font-size: 2.2rem;
+    position: relative;
+    display: inline-block;
+}
+
+.courses h2::after {
+    content: '';
+    display: block;
+    width: 60px;
+    height: 4px;
+    background: #f59e0b;
+    /* Orange accent */
+    margin: 10px auto 0;
+    border-radius: 2px;
+}
+
+.course-list {
+    display: flex;
+    justify-content: center;
+    gap: 40px;
+    flex-wrap: wrap;
+}
+
+/* COURSE CARD - WHITE THEME */
+.course-card {
+    position: relative;
+    width: 240px;
+    padding: 30px 20px;
+    background: white;
+    border-radius: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    transition: 0.3s;
+    border: 1px solid #f1f5f9;
+    color: #334155;
+    font-size: 1.1rem;
+}
+
+.course-card:hover {
+    transform: translateY(-10px);
+    border-color: #009688;
+    box-shadow: 0 15px 40px rgba(0, 150, 136, 0.15);
+    color: #009688;
+}
+
+/* POPUP */
+.course-popup {
+    position: absolute;
+    bottom: 110%;
+    left: 50%;
+    transform: translateX(-50%) translateY(10px);
+    width: 240px;
+    background: #1e293b;
+    /* Dark tooltip for contrast */
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 10;
+    font-size: 0.9rem;
+    pointer-events: none;
+}
+
+.course-popup::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 8px;
+    border-style: solid;
+    border-color: #1e293b transparent transparent transparent;
+}
+
+.course-popup h3 {
+    color: #f59e0b;
+    /* Orange title in dark popup */
+    margin-bottom: 8px;
+    font-size: 1.1rem;
+}
+
+.course-card:hover .course-popup {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(-50%) translateY(0);
+}

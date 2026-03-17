@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Admin Dashboard | Balaji Institute</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- Flatpickr for Date Formatting -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <style>
+        :root {
+            --primary: #009688;
+            /* Teal */
+            --primary-dark: #00796b;
+            --secondary: #e0f2f1;
+            --bg-color: #f1f5f9;
+            --card-bg: #ffffff;
+            --text-color: #334155;
+            --border-color: #cbd5e1;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* NAVBAR */
+        .navbar {
+            background-color: white;
+            padding: 15px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+            border-bottom: 3px solid var(--primary);
+        }
+
+        .navbar h2 {
+            margin: 0;
+            font-weight: 700;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .logout-btn {
+            background: #ffebee;
+            border: 1px solid #ef5350;
+            color: #ef5350;
+            padding: 8px 16px;
+            border-radius: 4px;
+            text-decoration: none;
+            transition: 0.3s;
+            font-weight: 500;
+        }
+
+        .logout-btn:hover {
+            background: #ef5350;
+            color: white;
+        }
+
+        /* MAIN CONTAINER */
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        /* DASHBOARD MENU */
+        .dashboard-menu {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin-bottom: 50px;
+            flex-wrap: wrap;
+        }
+
+        .menu-card {
+            background: var(--card-bg);
+            padding: 30px;
+            width: 250px;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 1px solid var(--border-color);
+            border-top: 4px solid var(--primary);
+            animation: slideUpFade 0.6s ease-out both;
+        }
+
+        .menu-card:nth-child(1) {
+            animation-delay: 0.1s;
+        }
+
+        .menu-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .menu-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .menu-card:nth-child(4) {
+            animation-delay: 0.4s;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .menu-card h3 {
+            margin-top: 0;
+            color: var(--primary-dark);
+            font-size: 1.2rem;
+        }
+
+        .menu-card p {
+            font-size: 0.9rem;
+            color: #64748b;
+        }
+
+        /* SECTIONS */
+        .section-content {
+            display: none;
+            background: var(--card-bg);
+            padding: 40px;
+            border-radius: 8px;
+            animation: fadeIn 0.5s ease;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideUpFade {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .section-header {
+            margin-bottom: 30px;
+            border-bottom: 2px solid var(--secondary);
+            padding-bottom: 10px;
+            color: var(--primary-dark);
+        }
+
+        /* FORMS */
+        .form-row {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            flex: 1;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 500;
+            font-size: 0.9rem;
+        }
+
+        input,
+        select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #cbd5e1;
+            background: #f8fafc;
+            color: #334155;
+            font-size: 1rem;
+        }
+
+        input:focus,
+        select:focus {
+            outline: none;
+            border-color: var(--primary);
+        }
+
+        button.action-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        button.action-btn:hover {
+            background: var(--primary-dark);
+            animation: pulse-grow 1s infinite;
+        }
+
+        /* TABLES */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            background: white;
+            border: 1px solid var(--border-color);
+        }
+
+        th,
+        td {
+            text-align: left;
+            padding: 12px 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        th {
+            background-color: var(--secondary);
+            color: var(--primary-dark);
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background-color: #f8fafc;
+        }
+
+        /* BUTTONS IN TABLE */
+        .btn-sm {
+            padding: 5px 10px;
+            border-radius: 4px;
+            border: none;
+            cursor: pointer;
+            font-size: 0.8rem;
+            color: white;
+        }
+
+        .btn-add {
+            background: #10b981;
+        }
+
+        .btn-delete {
+            background: #ef4444;
+        }
+
+        /* ALERTS */
+        .alert {
+            padding: 15px;
+            border-radius: 4px;
+            margin-top: 20px;
+            display: none;
+        }
+
+        .alert-success {
+            background: #d1fae5;
+            color: #065f46;
+            border: 1px solid #10b981;
+        }
+
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #ef4444;
+        }
+
+        /* MODAL */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            width: 400px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="navbar">
+        <div style="display:flex; align-items:center; gap:15px;">
+            <img src="{{ url_for('static', filename='assets/Logo.png') }}" alt="Logo" style="height: 50px;">
+            <h2>Admin Dashboard</h2>
+        </div>
+        <a href="/logout" class="logout-btn">Logout</a>
+    </nav>
+
+    <div class="container">
+
+        <!-- CENTERED MENU -->
+        <div class="dashboard-menu">
+            <div class="menu-card" onclick="openSection('enroll')">
+                <h3>Enroll Student</h3>
+                <p>Register new admissions</p>
+            </div>
+            <div class="menu-card" onclick="openSection('track')">
+                <h3>Track Fees</h3>
+                <p>Check payments & Dues</p>
+            </div>
+            <div class="menu-card" onclick="openSection('view')">
+                <h3>View Students</h3>
+                <p>All student records</p>
+            </div>
+
+        </div>
+
+        <!-- 1. ENROLL STUDENT -->
+        <div id="enroll" class="section-content">
+            <!-- (Content remains same) -->
+
+            <h2 class="section-header">New Student Enrollment</h2>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Student Name</label>
+                    <input id="sname" placeholder="Full Name">
+                </div>
+                <div class="form-control">
+                    <label>Date of Birth</label>
+                    <input id="dob" type="text" placeholder="dd/mm/yyyy">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Academic Year</label>
+                    <select id="academicYear">
+                        <option>2010</option>
+                        <option>2011</option>
+                        <option>2012</option>
+                        <option>2013</option>
+                        <option>2014</option>
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                        <option>2021</option>
+                        <option>2022</option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                        <option>2026</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                        <option>2029</option>
+                        <option>2030</option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Address</label>
+                    <input id="address" placeholder="Residential Address">
+                </div>
+                <div class="form-control">
+                    <label>Mobile Number</label>
+                    <input id="mobile" placeholder="10-digit Mobile">
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-control">
+                    <label>Course</label>
+                    <select id="course" onchange="toggleTypingMode()">
+                        <option>MSCIT</option>
+                        <option>Computer Typing</option>
+                        <option>Tally</option>
+                        <option>Advance Excel</option>
+                    </select>
+                </div>
+                <div class="form-control" id="typingModeContainer" style="display: none;">
+                    <label>Typing Mode</label>
+                    <select id="typingMode">
+                        <option>Eng 30</option>
+                        <option>Eng 40</option>
+                        <option>Eng 50</option>
+                        <option>Eng 60</option>
+                        <option>Marathi 30</option>
+                        <option>Marathi 40</option>
+                        <option>Hindi 30</option>
+                        <option>HIndi 40</option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label>Batch Timing</label>
+                    <select id="batchTiming">
+                        <option value="">Select Batch</option>
+                        <option>7:00 AM - 8:30 AM</option>
+                        <option>8:30 AM - 10:00 AM</option>
+                        <option>10:00 AM - 11:30 AM</option>
+                        <option>11:30 AM - 1:00 PM</option>
+                        <option>1:00 PM - 2:30 PM</option>
+                        <option>2:30 PM - 4:00 PM</option>
+                        <option>4:00 PM - 5:30 PM</option>
+                        <option>5:30 PM - 7:00 PM</option>
+                        <option>7:00 PM - 8:30 PM</option>
+                        <option>8:00 PM - 9:30 PM</option>
+                    </select>
+                </div>
+                <div class="form-control">
+                    <label>Fees Paid (Initial)</label>
+                    <input id="feesPaid" type="number" placeholder="Amount">
+                </div>
+            </div>
+            <br>
+            <button class="action-btn" onclick="submitEnroll()">Confirm Admission</button>
+            <div id="enrollMsg" class="alert"></div>
+        </div>
+
+        <!-- 2. TRACK FEES -->
+        <div id="track" class="section-content">
+            <h2 class="section-header">Track Fees</h2>
+            <div class="form-row" style="align-items: flex-end;">
+                <div class="form-control">
+                    <label>Search Student</label>
+                    <input id="trackQuery" placeholder="Enter Name or Mobile Number">
+                </div>
+                <button class="action-btn" onclick="trackFees()">Search</button>
+            </div>
+
+            <div id="trackResultsArea" style="margin-top: 30px; display: none;">
+                <table id="trackTable">
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Course</th>
+                            <th>Total Fee</th>
+                            <th>Paid</th>
+                            <th>Remaining</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="trackTableBody">
+                        <!-- Results go here -->
+                    </tbody>
+                </table>
+            </div>
+            <div id="trackMsg" class="alert"></div>
+        </div>
+
+        <!-- 3. VIEW STUDENTS -->
+        <div id="view" class="section-content">
+            <h2 class="section-header">Registered Students</h2>
+            <div class="form-row" style="margin-bottom: 20px; align-items: center;">
+                <div class="form-control" style="flex: none; width: 250px;">
+                    <label>Filter by Academic Year:</label>
+                    <select id="filterYear" onchange="loadStudents()">
+                        <option value="All">All Years</option>
+                        <option>2010</option>
+                        <option>2011</option>
+                        <option>2012</option>
+                        <option>2013</option>
+                        <option>2014</option>
+                        <option>2015</option>
+                        <option>2016</option>
+                        <option>2017</option>
+                        <option>2018</option>
+                        <option>2019</option>
+                        <option>2020</option>
+                        <option>2021</option>
+                        <option>2022</option>
+                        <option>2023</option>
+                        <option>2024</option>
+                        <option>2025</option>
+                        <option>2026</option>
+                        <option>2027</option>
+                        <option>2028</option>
+                        <option>2029</option>
+                        <option>2030</option>
+                    </select>
+                </div>
+            </div>
+            <table id="studentTable">
+                <thead>
+                    <tr>
+                        <th>S.No</th>
+                        <th>Name</th>
+                        <th>Mobile</th>
+                        <th>Course</th>
+                        <th>Year</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody id="studentMsg"></tbody>
+            </table>
+        </div>
+
+
+
+    </div>
+
+    <!-- UPDATE FEE MODAL -->
+    <div id="feeModal" class="modal">
+        <div class="modal-content">
+            <h3>Edit Student Fees</h3>
+            <p id="modalStudentName" style="color: #64748b; margin-bottom: 20px;"></p>
+            <input type="hidden" id="modalStudentId">
+
+            <label>Total Fee</label>
+            <input type="number" id="editTotalFee" placeholder="Total Fee">
+            <br><br>
+
+            <label>Fees Paid</label>
+            <input type="number" id="editFeesPaid" placeholder="Amount Paid">
+            <br><br>
+
+            <div style="display:flex; justify-content: flex-end; gap:10px;">
+                <button onclick="closeModal()"
+                    style="background:transparent; border:1px solid #ccc; color:#333; padding:10px; cursor:pointer;">Cancel</button>
+                <button onclick="submitFeeUpdate()" class="action-btn">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // TABS / SECTIONS
+        function openSection(id) {
+            document.querySelectorAll('.section-content').forEach(el => el.style.display = 'none');
+            const target = document.getElementById(id);
+            if (target) {
+                target.style.display = 'block';
+                if (id === 'view') loadStudents();
+            }
+        }
+
+        // 1. ENROLL
+        function submitEnroll() {
+            const msg = document.getElementById('enrollMsg');
+            msg.style.display = 'none';
+
+            // Use the date directly since flatpickr handles dd/mm/yyyy format
+            let dobValue = document.getElementById('dob').value;
+
+            const data = {
+                name: document.getElementById('sname').value,
+                dob: dobValue,
+                address: document.getElementById('address').value,
+                mobile: document.getElementById('mobile').value,
+                course: document.getElementById('course').value,
+                academic_year: document.getElementById('academicYear').value,
+                typing_mode: document.getElementById('course').value === 'Computer Typing' ? document.getElementById('typingMode').value : null,
+                batch_timing: document.getElementById('batchTiming').value,
+                fees_paid: document.getElementById('fees_paid') ? document.getElementById('fees_paid').value : document.getElementById('feesPaid').value
+            };
+
+            fetch('/enroll', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            })
+                .then(res => res.json())
+                .then(data => {
+                    msg.style.display = 'block';
+                    if (data.status === 'success') {
+                        msg.className = 'alert alert-success';
+                        msg.innerText = `Success! Remaining Fee: ₹${data.remaining_fee}`;
+                        // Clear form
+                        document.getElementById('sname').value = '';
+                        document.getElementById('mobile').value = '';
+                        document.getElementById('dob').value = '';
+                    } else {
+                        msg.className = 'alert alert-error';
+                        msg.innerText = data.error || 'Error enrolling student.';
+                    }
+                })
+                .catch(err => {
+                    msg.style.display = 'block';
+                    msg.className = 'alert alert-error';
+                    msg.innerText = 'Server connection failed.';
+                    console.error(err);
+                });
+        }
+
+        // 2. TRACK FEES
+        function trackFees() {
+            const query = document.getElementById('trackQuery').value;
+            const tableArea = document.getElementById('trackResultsArea');
+            const tbody = document.getElementById('trackTableBody');
+            const msg = document.getElementById('trackMsg');
+
+            tableArea.style.display = 'none';
+            msg.style.display = 'none';
+            tbody.innerHTML = '';
+
+            if (!query) return;
+
+            fetch('/track-fees/' + encodeURIComponent(query))
+                .then(res => res.json())
+                .then(data => {
+                    if (data.error) {
+                        msg.style.display = 'block';
+                        msg.className = 'alert alert-error';
+                        msg.innerText = data.error;
+                    } else {
+                        tableArea.style.display = 'block';
+                        data.forEach((s, index) => {
+                            let row = tbody.insertRow();
+                            row.className = 'tr-animate';
+                            row.style.animationDelay = (index * 0.1) + 's';
+                            row.innerHTML = `
+                            <td>${s.name}</td>
+                            <td>${s.course}</td>
+                            <td>₹${s.total_fee}</td>
+                            <td>₹${s.paid}</td>
+                            <td>₹${s.remaining}</td>
+                            <td>
+                                <button class="btn-sm btn-add" onclick="openFeeModal('${s.student_id}', '${s.name}', '${s.total_fee}', '${s.paid}')">Edit</button>
+                            </td>
+                        `;
+                        });
+                    }
+                });
+        }
+
+        // FEE MODAL
+        function openFeeModal(id, name, total, paid) {
+            document.getElementById('modalStudentId').value = id;
+            document.getElementById('modalStudentName').innerText = "Student: " + name;
+
+            // Pre-fill values
+            document.getElementById('editTotalFee').value = total;
+            document.getElementById('editFeesPaid').value = paid;
+
+            document.getElementById('feeModal').style.display = 'flex';
+        }
+        function closeModal() {
+            document.getElementById('feeModal').style.display = 'none';
+        }
+        function submitFeeUpdate() {
+            const id = document.getElementById('modalStudentId').value;
+            const total = document.getElementById('editTotalFee').value;
+            const paid = document.getElementById('editFeesPaid').value;
+
+            fetch('/update-fees', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ student_id: id, total_fee: total, fees_paid: paid })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        alert("Fee Updated! New Remaining: " + res.new_remaining);
+                        closeModal();
+                        trackFees(); // refresh list
+                    } else {
+                        alert("Error: " + res.error);
+                    }
+                });
+        }
+
+        // 3. VIEW STUDENTS
+        function loadStudents() {
+            const year = document.getElementById('filterYear') ? document.getElementById('filterYear').value : 'All';
+            fetch('/students?year=' + encodeURIComponent(year))
+                .then(r => r.json())
+                .then(data => {
+                    const tbody = document.getElementById('studentMsg');
+                    tbody.innerHTML = '';
+                    if (data.length === 0) {
+                        tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; color:#999;">No students found</td></tr>';
+                        return;
+                    }
+                    data.forEach((s, index) => {
+                        let row = tbody.insertRow();
+                        row.innerHTML = `
+                        <td>${index + 1}</td>
+                        <td>${s[1]}</td>
+                        <td>${s[2]}</td>
+                        <td>${s[3]}</td>
+                        <td>${s[4] || '-'}</td>
+                        <td>
+                            <button class="btn-sm btn-delete" onclick="deleteStudent(${s[0]})">Delete</button>
+                        </td>
+                    `;
+                    });
+                });
+        }
+
+        function deleteStudent(id) {
+            if (!confirm("Are you sure you want to delete this student? Use caution.")) return;
+
+            fetch('/delete-student', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ student_id: id })
+            })
+                .then(r => r.json())
+                .then(res => {
+                    if (res.success) {
+                        loadStudents(); // Refresh table
+                    } else {
+                        alert("Error deleting student: " + res.error);
+                    }
+                });
+        }
+
+        function toggleTypingMode() {
+            const course = document.getElementById('course').value;
+            const container = document.getElementById('typingModeContainer');
+            if (course === 'Computer Typing') {
+                container.style.display = 'block';
+            } else {
+                container.style.display = 'none';
+            }
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            flatpickr("#dob", {
+                dateFormat: "d/m/Y",
+                allowInput: true
+            });
+        });
+    </script>
+</body>
+
+</html>
